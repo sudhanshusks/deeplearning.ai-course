@@ -1,0 +1,53 @@
+Deep Learning course :
+
+week 2 :
+Logistic Regression ( weight w and bias b, #training examples=m_train, #test examples= m_test, #input_features= n_x)
+Cost function and Loss function -
+loss_func_i= -(y_i*log(y^_i) + (1-y_i)*log(1-y^_i)) 
+	 where y_i= actual output ith example and y^_i= predicted output of ith example
+	 y^_i = sig(w_t*x_i + b) where sig() is sigmoid function, w_t= weight vector transpose, b= bias, x_i= input vector
+	 sig(z)=1/(1+exp(-z))
+cost_func= (-1/m)*sum_over_i(loss_func_i)
+goal is to minimize the cost function by changing the parameters w and b
+Gradient descent - 
+repeat steps {
+	w := w - lr*(derivative(loss_func_i) wrt w)
+	b := b- lr*(derivative(loss_func_i) wrt b)
+}
+Computational graphs -
+graph showing all operations of a calculation on graph eg
+J(a,b,c) = 3*(a+ b*c) is having 3 processes
+u= b*c,  v= a+u,    J= 3*v
+every process in NN makes a comp graph for forward propagation and backward propagation on defined functions
+to make computation fast
+Gradient Descent on all examples - 
+we use for loops to compute the gradient of each example and for each weight 
+for loops are too slow on large dataset, so Vectorisation is used to fast the process
+Vectorization -
+in this rather than for loop over each element, make vectors and do vector operation using numpy
+Logistic Regression (vectorisation) -
+we compute z_i= w_t*x_i + b
+	and		a_i= sig(z_i)
+now, 
+X= [x_1, x_2, ....., x_m]       where X.shape=(n_x, m), each x_i is a vector of image pixels
+Z= [z_1, z_2, ..... z_m] =np.dot(w.T, X) + b
+A=[a_1 a_2 ...... a_m] = sigmoid(Z)   where sigmoid() function apply elementwise operation of sigmoid function
+A is predicted output vector and Y is actual output vector
+dz=[a_1-y_1, a_2-y_2, ......, a_m-y_m] = A - Y  	# it is derivative of loss_func wrt each z_i
+dw= [x_1*dz_1, x_2*dz_2, .... , x_m*dz_m] = (1/m)*np.dot(X,dz.T)	# derivative of loss_func wrt each weights w_i
+now, w := w - lr*dw
+db= [dz_1, dz_2, ..... , dz_m] = (1/m)*np.sum(dz)		# derivative of bias wrt bias b
+now, b := b - lr*db
+#np.dot() is used for matrx multiplication while * is used for elementwise multiplication
+
+a = g(z)		# where g() is sigmoid function
+then, g`(z) = a(1-a)   
+
+deep neural network:
+w[l] is weight to compute z[l]
+
+to autoreload external files in ipython notebook:
+(external python file is called in another python file and if something is changed in external file, it will automatically change in the current file)
+import autoreload
+%load_ext autoreload
+%autoreload 2
